@@ -1,4 +1,4 @@
-from ChatBot import ChatBot
+from Config.ChatBot import ChatBot
 
 Bot = ChatBot('jairo')
 
@@ -8,6 +8,3 @@ while True:
     Bot.fala(resp)
     if frase == 'tchau':
         break
-    else:
-        print('Digite outra coisa')
-print("Tchau Tchau...!!!")

@@ -1,49 +1,50 @@
-import json
 import sys
 import os
 import subprocess as os_linux
+from Config.Memoria import Memoria
+
 class ChatBot:
     def __init__(self, nome):
-        try:
-            memoria = open('memoria/arquivo.json','r')
-        except FileNotFoundError:
-            memoria = open('memoria/arquivo.json','w')
-            memoria.write('["Adamus"]')
-            memoria.close()
-            memoria = open('memoria/arquivo.json', 'r')
         self.nome = nome
-        self.conhecidos = json.load(memoria)
-        self.historico = []
-        memoria.close()
-        self.frases = {'oi': 'Olá, qual seu nome?', 'ola': 'Ooi', 'opa': 'Opá', 'tchau': 'Thau Tchau, foi bom falar com você.'}
+        self.historico = ['primeiro']
+        self.frases = Memoria.busca_conversa()
 
+        self.conhecidos = []
     def escuta(self):
         frase= input('>: ')
         frase = frase.lower()
         return frase
+    def aprender(self):
+        novidade = input('Digite o que vou ouvir: ')
+        resposta = input('Digite o que responderei: ')
+        self.frases[novidade] = resposta
+
+        return 'Aprendido!'
+
 
     def pensa(self, frase):
+        if frase == 'manutenção':
+            self.manutencao(frase)
         if frase in self.frases:
             return self.frases[frase]
         if frase == 'aprende':
-            novidade = input('Digite o que vou ouvir: ')
-            resposta = input('Digite o que responderei: ')
-            self.frases[novidade] = resposta
-            return 'Aprendido!'
+           return self.aprender()
 
         if self.historico[-1] == "Olá, qual seu nome?":
             nome = self.pega_nome(frase)
             resp = self.respondeNome(nome)
+            self.historico.append(frase)
             return  resp
-        ## Comandos de manutenção
-        if frase == 'frases':
-            return self.frases
         try:
             resp = str(eval(frase))
             return resp
         except:
-            pass
-            return 'Não entendi,amigo.'
+            novidade = frase
+            print("Não entendi. ")
+            resposta = input('Oque devo responder a isso? ')
+            self.frases[novidade] = resposta
+            Memoria.salva_conversa(self.frases)
+            return 'Aprendido!'
         return 'Não entendi!'
 
     def fala(self, frase):
@@ -60,21 +61,22 @@ class ChatBot:
                     os_linux.Popen(['xdg-open', comando])
         else:
             print(frase)
-        self.historico.append(frase)
+            self.historico.append(frase)
 
-    def respondeNome(self, nome):
-        if nome in self.conhecidos:
-            frase = "Bom te ver "
-        else:
-            frase =("Prazer em conhecer você ")
-            self.conhecidos.append(nome)
-            memoria = open('memoria/arquivo.json','w')
-            json.dump(self.conhecidos, memoria)
-            memoria.close()
-        return frase + nome
     def pega_nome(self, nome):
         nome = nome.title()
         return nome
 
-    def teste(self):
-        print(self.nome, self.conhecidos)
+    def respondeNome(self, nome):
+        conhecidos = Memoria.busca_nome()
+        if nome in conhecidos:
+            frase = "Bom te ver "
+        else:
+            frase =("Prazer em conhecer você ")
+            conhecidos.append(nome)
+            Memoria.salva_nome(conhecidos)
+        return frase + nome
+
+    def manutencao(self, frase):
+        if frase == 'manutenção':
+            print(self.frases)
