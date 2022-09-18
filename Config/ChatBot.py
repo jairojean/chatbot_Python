@@ -21,7 +21,6 @@ class ChatBot:
 
         return 'Aprendido!'
 
-
     def pensa(self, frase):
         if frase == 'manutenção':
             self.manutencao(frase)
