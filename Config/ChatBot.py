@@ -18,9 +18,7 @@ class ChatBot:
         novidade = input('Digite o que vou ouvir: ')
         resposta = input('Digite o que responderei: ')
         self.frases[novidade] = resposta
-
         return 'Aprendido!'
-
     def pensa(self, frase):
         if frase == 'manutenção':
             self.manutencao(frase)
@@ -28,7 +26,6 @@ class ChatBot:
             return self.frases[frase]
         if frase == 'aprende':
            return self.aprender()
-
         if self.historico[-1] == "Olá, qual seu nome?":
             nome = self.pega_nome(frase)
             resp = self.respondeNome(nome)
@@ -45,7 +42,6 @@ class ChatBot:
             Memoria.salva_conversa(self.frases)
             return 'Aprendido!'
         return 'Não entendi!'
-
     def fala(self, frase):
         ## Abrindo programas externos
         if 'executa' in frase:
@@ -61,11 +57,9 @@ class ChatBot:
         else:
             print(frase)
             self.historico.append(frase)
-
     def pega_nome(self, nome):
         nome = nome.title()
         return nome
-
     def respondeNome(self, nome):
         conhecidos = Memoria.busca_nome()
         if nome in conhecidos:
@@ -75,7 +69,6 @@ class ChatBot:
             conhecidos.append(nome)
             Memoria.salva_nome(conhecidos)
         return frase + nome
-
     def manutencao(self, frase):
         if frase == 'manutenção':
             print(self.frases)

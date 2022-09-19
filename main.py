@@ -1,6 +1,6 @@
 from Config.ChatBot import ChatBot
 
-Bot = ChatBot('jairo')
+Bot = ChatBot('Chappie')
 while True:
     frase = Bot.escuta()
     resp = Bot.pensa(frase)
