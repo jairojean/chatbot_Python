@@ -8,11 +8,12 @@ class ChatBot:
         self.nome = nome
         self.historico = ['primeiro']
         self.frases = Memoria.busca_conversa()
-
         self.conhecidos = []
-    def escuta(self):
+    @staticmethod
+    def escuta():
         frase= input('>: ')
         frase = frase.lower()
+        frase = frase.replace(" ", "")
         return frase
     def aprender(self):
         novidade = input('Digite o que vou ouvir: ')
@@ -57,10 +58,14 @@ class ChatBot:
         else:
             print(frase)
             self.historico.append(frase)
-    def pega_nome(self, nome):
+
+    @staticmethod
+    def pega_nome(nome):
         nome = nome.title()
         return nome
-    def respondeNome(self, nome):
+
+    @staticmethod
+    def respondeNome(nome):
         conhecidos = Memoria.busca_nome()
         if nome in conhecidos:
             frase = "Bom te ver "

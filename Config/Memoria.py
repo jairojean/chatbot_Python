@@ -1,7 +1,4 @@
 import json
-import sys
-import os
-import subprocess as os_linux
 class Memoria:
     @staticmethod
     def busca_nome():
@@ -18,6 +15,7 @@ class Memoria:
             conhecidos = json.load(nomes)
             nomes.close()
         return conhecidos
+    @staticmethod
     def salva_nome(conhecidos):
         memoria = open('memoria/nomes.json', 'w')
         json.dump(conhecidos, memoria)
@@ -28,6 +26,7 @@ class Memoria:
         conversas = json.load(memoria)
         memoria.close()
         return conversas
+    @staticmethod
     def salva_conversa(frase):
         memoria = open('memoria/conversas.json', 'w')
         json.dump(frase, memoria)
